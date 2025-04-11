@@ -1,0 +1,55 @@
+server:
+  port: 5555
+
+app:
+  allowed-origin-patterns: "http://localhost:8080,http://localhost:8081,http://localhost:8082,http://localhost:8083,http://localhost:8084,http://localhost:8085"
+
+spring:
+  application:
+    name: tc-f5-middleware-api-gateway
+  main:
+    web-application-type: reactive
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: tc-f5-ms-users
+          uri: lb://tc-f5-ms-users
+          predicates:
+            - Path=/ms_users/**
+          filters:
+            - RewritePath=/ms_users/(?<path>.*), /$\{path}
+        - id: tc-f5-ms-login
+          uri: lb://tc-f5-ms-login
+          predicates:
+            - Path=/ms_login/**
+          filters:
+            - RewritePath=/ms_login/(?<path>.*), /$\{path}
+      globalcors:
+        add-to-simple-url-handler-mapping: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    instanceId: ${spring.application.name}
+
+management:
+  endpoint:
+    gateway:
+      enabled: true
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: gateway,health,info,metrics,routes,refresh
+  info:
+    build:
+      enabled: true
+    env:
+      enabled: true
