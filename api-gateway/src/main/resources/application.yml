@@ -22,12 +22,27 @@ spring:
             - Path=/ms_users/**
           filters:
             - RewritePath=/ms_users/(?<path>.*), /$\{path}
+
         - id: tc-f5-ms-login
           uri: lb://tc-f5-ms-login
           predicates:
             - Path=/ms_login/**
           filters:
             - RewritePath=/ms_login/(?<path>.*), /$\{path}
+
+        - id: tc-f5-ms-unidade
+          uri: lb://sus
+          predicates:
+            - Path=/ms_unidade/**
+          filters:
+            - RewritePath=/ms_unidade/(?<path>.*), /$\{path}
+
+        - id: tc-f5-ms-atendimento
+          uri: lb://tc-f5-ms-atendimento
+          predicates:
+            - Path=/ms_atendimento/**
+          filters:
+            - RewritePath=/ms_atendimento/(?<path>.*), /$\{path}
       globalcors:
         add-to-simple-url-handler-mapping: true
 

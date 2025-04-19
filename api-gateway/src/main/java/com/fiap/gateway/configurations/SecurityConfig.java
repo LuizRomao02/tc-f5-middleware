@@ -43,6 +43,10 @@ public class SecurityConfig {
                     .permitAll()
                     .pathMatchers("/ms_login/**")
                     .permitAll()
+                    .pathMatchers("/ms_unidade/**")
+                    .permitAll()
+                    .pathMatchers("/ms_unidade/**")
+                    .permitAll()
                     .anyExchange()
                     .authenticated());
 
